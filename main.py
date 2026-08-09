@@ -5,7 +5,7 @@ from confluent_kafka import Producer
 
 app = FastAPI()
 
-producer = Producer({"bootstrap.servers": "localhost:9094"})
+producer = Producer({"bootstrap.servers": "kafka:9092"})
 TOPIC = "test"
 
 

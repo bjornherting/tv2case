@@ -18,7 +18,7 @@ Planlegger å implementere i Python, siden det er kjent for meg og et effektivt 
 
 ### Søndag, på Apparat HQ
 
-Jeg har ikke tid til å lese meg opp på hvordan man bruker fastAPI og confluent-kafka, og siden tjenesten skal gjøre en enkel og konkret oppgave regner jeg med at ChatGPT har et godt forslag til implementasjon.
+Jeg er i pappaperm og har ikke tid til å lese meg opp på hvordan man bruker fastAPI og confluent-kafka. Siden tjenesten skal gjøre en enkel og konkret oppgave regner jeg med at ChatGPT har et godt forslag til implementasjon.
 
 Prompt:
 > I'm implementing a POC of a python service that will accept arbitrary json data and send it to a kafka topic. 
@@ -27,4 +27,6 @@ Prompt:
 > Respond 400 bad request in the case of invalid json.
 > Any other errors should be propagated so that they result in a http 500 error response. Keep this minimal and clean
 
-Etter litt finpuss av ChatGPTs forslag har jeg en veldig minimal og enkel POC som jeg mener er god nok for denne programmeringsoppgaven. Kommer tilbake til forbedringspotensiale.
+Etter litt finpuss av ChatGPTs forslag har jeg en veldig minimal implementasjon, som kan være tilstrekkelig for en POC som beskrevet i oppgaveteksten
+
+Ber også ChatGpt om en Dockerfile og å få startet den i docker-compose.yml
