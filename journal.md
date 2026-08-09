@@ -30,3 +30,17 @@ Prompt:
 Etter litt finpuss av ChatGPTs forslag har jeg en veldig minimal implementasjon, som kan være tilstrekkelig for en POC som beskrevet i oppgaveteksten
 
 Ber også ChatGpt om en Dockerfile og å få startet den i docker-compose.yml
+
+## Forbedringer og tiltak
+
+### I koden
+* Tjenesten kaller producer.flush() for hvert kall til apiet for å garantere mottak i kafka. Dette kallet blokkerer håndteringen av andre requests og burde endres til å være callback basert. Jeg har vurdert det som utenfor scope for denne oppgaven. Kall av flush for hver request hindrer også fordeler man får av kafka sin interne buffering mekanisme, så det bør vurderes hvilke garantier tjenesten skal gi for data som sendes inn
+* Tjenesten aksepterer alt kan tolkes som json. Dette betyr at "foo" og null også er gyldig data, men jeg ser for meg at dette ikke er hva brukerne og videre konsumenter av kafka topic forventer. Ville sjekket med disse hvilket behov de egentlig har
+* Det settes ikke key på kafka meldinger, som hindrer god utnyttelse av partisjoneringen i kafka. Siden dette er data fra brukerne ser jeg for meg at vi ville hatt tilgjengelig en  bruker-id eller lignende å bruke som key
+* Der er ingen tester. Siden det ikke er noen business logikk her er det ikke behov for masser av unit-tester, men det burde settes opp en enkel integrasjonstest som verifiseres at gyldige requests går gjennom
+
+### Klargjøring for produksjon
+* Siden dette er data fra play-brukere som jeg antar stort sett oppholder seg i Norge er det antagelig mer trafikk rundt noen tidspunkter og hendelser, og andre roligere perioder. Tjenesten bør kjøre i kubernetes eller på andre måter som lar oss skalere opp antall instanser ved behov. Dette hindrer også nedetid ved oppgradering
+* Vi må ha autentisering. Dette ville jeg implementert ihht behovet og hva som brukes ellers i organisasjonen
+* Det bør sørges for at feilsituasjoner logges og at disse loggene sendes til elastic eller tilsvarende for feilsøking
+* Vi bør samle inn metrikker på ting som antall forskjellige http respons koder og latency
